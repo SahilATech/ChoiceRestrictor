@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="sa" constructor="ChoiceRestrictor" version="0.0.1" display-name-key="ChoiceRestrictor" description-key="ChoiceRestrictor description" control-type="virtual" >
+ 
+    <external-service-usage enabled="false">     
+    </external-service-usage>    
+    
+    
+      <type-group name="choice">
+        <type>OptionSet</type>
+        <type>MultiSelectOptionSet</type>
+      </type-group>
+      <property name="choice" display-name-key="choice" of-type-group="choice" usage="bound" required="true" />
+
+      <property name="RestrictedChoices" display-name-key="Restricted choices" description-key="Defines a list of restricted choices that the user can not select. Enter choice values separated by a comma" of-type="SingleLine.Text" usage="input" required="false" />
+
+    <resources>
+      <code path="index.ts" order="1"/>
+      <platform-library name="React" version="16.8.6" />
+      <platform-library name="Fluent" version="8.29.0" />
+      <!-- UNCOMMENT TO ADD MORE RESOURCES
+      <css path="css/ChoiceRestrictor.css" order="1" />
+      <resx path="strings/ChoiceRestrictor.1033.resx" version="1.0.0" />
+      -->
+    </resources>
+    <!-- UNCOMMENT TO ENABLE THE SPECIFIED API
+    <feature-usage>
+      <uses-feature name="Device.captureAudio" required="true" />
+      <uses-feature name="Device.captureImage" required="true" />
+      <uses-feature name="Device.captureVideo" required="true" />
+      <uses-feature name="Device.getBarcodeValue" required="true" />
+      <uses-feature name="Device.getCurrentPosition" required="true" />
+      <uses-feature name="Device.pickFile" required="true" />
+      <uses-feature name="Utility" required="true" />
+      <uses-feature name="WebAPI" required="true" />
+    </feature-usage>
+    -->
+  </control>
+</manifest>
