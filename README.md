@@ -4,7 +4,7 @@
 
 ![ChoiceRestrictorControl_MultiSelect](https://github.com/SahilATech/ChoiceRestrictor/blob/0bf2727c4b101793205c7dca2e2e041c5052e72e/Images/ChoiceRestrictorControl_MultiSelect.png)
 
-[Managed Solution](https://github.com/SahilATech/ChoiceRestrictor/raw/0bf2727c4b101793205c7dca2e2e041c5052e72e/Solutions/solutions_managed.zip)
+[Managed Solution](https://github.com/SahilATech/ChoiceRestrictor/raw/8dece8b848825928754cdaca03cd5aef4f98ccff/Solutions/solutions_managed.zip)
 
 
 ## Features
@@ -35,7 +35,7 @@
 ![ChoiceRestrictorControl_MultiSelect](https://github.com/SahilATech/ChoiceRestrictor/blob/0bf2727c4b101793205c7dca2e2e041c5052e72e/Images/ChoiceRestrictorControl_MultiSelect.png)
 
 
-[Managed Solution](https://github.com/SahilATech/ChoiceRestrictor/raw/0bf2727c4b101793205c7dca2e2e041c5052e72e/Solutions/solutions_managed.zip)
+[Managed Solution](https://github.com/SahilATech/ChoiceRestrictor/raw/8dece8b848825928754cdaca03cd5aef4f98ccff/Solutions/solutions_managed.zip)
 
 ## License
 
