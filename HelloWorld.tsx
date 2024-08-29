@@ -22,6 +22,7 @@ interface IHelloWorldState {
   selectedChoiceMulti:(string | number)[] | undefined;
   isMultiSelectOptionSet:boolean;
   selectableOptions:IDropdownOption<any>[] | undefined;
+  isOpen:boolean;
 }
 
 const onRenderCaretDown = (): JSX.Element => {
@@ -39,13 +40,13 @@ export class HelloWorld extends React.Component<IHelloWorldProps,IHelloWorldStat
       isDisable:props.isDisable,
       selectedChoiceSingle:props.selectedChoiceSingle,
       selectableOptions : props.Choices?.filter( option => !option?.disabled && option?.key !== "selectAll"),
-
-      //selectedChoiceMulti: props.selectedChoiceMulti,
-      selectedChoiceMulti : 
-      (props.selectedChoiceMulti?.filter(key => key.toString() !== 'selectAll').length as number)
-      >=  (props.Choices?.filter( option => !option?.disabled && option?.key !== "selectAll")?.length as number) ? ['selectAll', ...( props.selectedChoiceMulti?.map(o => o) || [])] : props.selectedChoiceMulti
+      isOpen:false,
+      selectedChoiceMulti: props.selectedChoiceMulti
+     // selectedChoiceMulti : (props.selectedChoiceMulti?.filter(key => key.toString() !== 'selectAll').length as number) >=  (props.Choices?.filter( option => !option?.disabled && option?.key !== "selectAll")?.length as number) ? ['selectAll', ...( props.selectedChoiceMulti?.map(o => o) || [])] : props.selectedChoiceMulti
     }
     this.updateValues = this.updateValues.bind(this);
+    this.handleDropdownDismiss = this.handleDropdownDismiss.bind(this);
+    this.handleDropdownOpen= this.handleDropdownOpen.bind(this);
   }
   private updateValues(event: React.FormEvent<HTMLDivElement>,option?: IDropdownOption){   
     const selected = option?.selected;
@@ -110,11 +111,92 @@ export class HelloWorld extends React.Component<IHelloWorldProps,IHelloWorldStat
       }    
   }
   
+  private handleDropdownDismiss(): void {
+  console.log("handle Dismiss");
+    if (!this.state.isOpen) {
+      console.log("handle Dismiss - Dropdown closed");
+      this.setState((prevState) => {
+        
+        // Create a copy of the current array
+        const updatedChoices = [...(prevState.selectedChoiceMulti || [])];
+  
+        const indexAll = this.state.selectedChoiceMulti?.indexOf("selectAll");
+        if (indexAll !== undefined && indexAll !== -1){
+          updatedChoices.splice(indexAll, 1);
+          console.log("selectAll Remove");
+          this.props.onChange(updatedChoices);
+        }
+        return { selectedChoiceMulti: updatedChoices };
+      });
+
+      //this.setState({ isOpen: false });
+      // Add any additional logic you want to execute when the dropdown is dismissed
+    }
+    else{
+      console.log("handle Dismiss - Dropdown opened");
+      this.setState({ isOpen: false });
+
+      this.setState((prevState) => {
+        
+        // Create a copy of the current array
+        const updatedChoices = [...(prevState.selectedChoiceMulti || [])];
+  
+        const indexAll = this.state.selectedChoiceMulti?.indexOf("selectAll");
+        if (indexAll !== undefined && indexAll !== -1){
+          updatedChoices.splice(indexAll, 1);
+          console.log("selectAll Remove");
+          this.props.onChange(updatedChoices);
+        }
+        return { selectedChoiceMulti: updatedChoices };
+      });
+    } 
+  }
+
+  private handleDropdownOpen(): void {
+    console.log("handle onClick");
+    this.setState((prevState) => {
+      const isOpen = !prevState.isOpen;
+      if (isOpen) {
+        console.log("handle onClick - Dropdown opened");       
+        this.setState((prevState) => {
+          const updatedChoices = [...(prevState.selectedChoiceMulti || [])];
+          const indexAll = this.state.selectedChoiceMulti?.indexOf("selectAll");
+          const selectAllState = updatedChoices?.filter( key => key.toString() !== 'selectAll' && !this.props.restrictedChoices?.includes(key.toString())).length >=  (this.state.selectableOptions?.length as number);
+    
+          if((indexAll == undefined || indexAll == -1) && selectAllState)
+          {
+            console.log("selectAll Configure");
+            return { selectedChoiceMulti: ['selectAll', ...(updatedChoices.map(o => o) || [])]  };
+          }
+          else{
+            console.log("without selectAll Configure");
+            return { selectedChoiceMulti : updatedChoices };
+          }
+          /*
+          else if(indexAll !== undefined && indexAll !== -1 &&!selectAllState){
+            updatedChoices.splice(indexAll, 1);
+            console.log("selectAll Remove");
+            this.props.onChange(updatedChoices);
+          }           
+          */          
+        });
+
+      } 
+      else {
+        console.log("handle onClick - Dropdown closed");
+        // Add any additional logic you want to execute when the dropdown is closed
+      }
+      return { isOpen };
+    });
+
+  }
 
   public render(): React.ReactNode {
     const {isMultiSelectOptionSet,Choices,selectedChoiceSingle,selectedChoiceMulti,isDisable} = this.state;
     return (
-      <div className={styles.container}>
+      <div 
+      className={styles.container}
+        >
           <Dropdown
           className={styles.Dropdown}
             placeholder="Select an option"      
@@ -124,12 +206,15 @@ export class HelloWorld extends React.Component<IHelloWorldProps,IHelloWorldStat
             onRenderCaretDown={onRenderCaretDown}
             
             defaultSelectedKey={selectedChoiceSingle}
-
             // Dynamically handle selectedKey vs. selectedKeys
             selectedKey={isMultiSelectOptionSet ? undefined : selectedChoiceSingle}
             selectedKeys={isMultiSelectOptionSet ? selectedChoiceMulti as string[]  : undefined}
             disabled={isDisable}
             onChange={this.updateValues}
+
+            
+             onClick={this.handleDropdownOpen}
+             onDismiss={this.handleDropdownDismiss}
           />
           </div>
     )
