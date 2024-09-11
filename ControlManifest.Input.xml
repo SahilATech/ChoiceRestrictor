@@ -14,6 +14,11 @@
 
       <property name="RestrictedChoices" display-name-key="Restricted choices" description-key="Defines a list of restricted choices that the user can not select. Enter choice values separated by a comma" of-type="SingleLine.Text" usage="input" required="false" />
 
+      <property name="RestrictedChoicesVisibility" display-name-key="Restricted choices display" of-type="Enum" usage="input" required="false" default-value="1">
+        <value name="Disabled" display-name-key="Disabled">1</value>
+        <value name="Hide" display-name-key="Hide">0</value>
+      </property>
+      
     <resources>
       <code path="index.ts" order="1"/>
       <platform-library name="React" version="16.8.6" />

@@ -68,16 +68,32 @@ export class ChoiceRestrictor implements ComponentFramework.ReactControl<IInputs
                 this._Choices.push( { key: 'Null', text: '--Select--', itemType: SelectableOptionMenuItemType.SelectAll });    
             this._selectedChoiceSingle =attributes.Options?.find(it => {return it.Label === context.parameters.choice.formatted;})?.Value
         }
-
         
-        // Handle Options
+        // Disabled or Hiding Restricted Choices        
         const options = attributes?.Options;
-        options?.forEach(option => {
-            this._Choices.push({
-                key: option.Value,
-                text: option.Label,
-                disabled: this._restrictedChoices?.includes(option.Value.toString())
-            });
+
+        options?.forEach(option => {  
+            const presentInRestrict = this._restrictedChoices?.includes(option.Value.toString());
+
+            
+            context.parameters.RestrictedChoicesVisibility.raw == "1" || //Disable the option
+            (!this._isMultiSelectOptionSet && option.Value == this._selectedChoiceSingle) || //Disable the option if key already selected (previously)
+            (this._isMultiSelectOptionSet && this._selectedChoiceMulti?.includes(option.Value)) ? //add the option in list if key already selected (previously) but not disable
+                this._Choices.push({
+                    key: option.Value,
+                    text: option.Label,
+                    //in case of multiselect can't disable becasue user unselect 
+                    //in case of single select disable becasue select other option then automatic unselect then happen in multiselect
+                    disabled: this._isMultiSelectOptionSet ? false : presentInRestrict
+                })
+                :
+                !presentInRestrict ? //if key not selected (previously) and in restrict list then not add into list
+                this._Choices.push({
+                    key: option.Value,
+                    text: option.Label
+                })
+                :
+                null
         });
 
 

@@ -6,6 +6,7 @@
 export interface IInputs {
     choice: ComponentFramework.PropertyTypes.Property;
     RestrictedChoices: ComponentFramework.PropertyTypes.StringProperty;
+    RestrictedChoicesVisibility: ComponentFramework.PropertyTypes.EnumProperty<"1" | "0">;
 }
 export interface IOutputs {
     choice?: any;
